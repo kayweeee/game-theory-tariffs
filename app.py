@@ -160,9 +160,9 @@ U_x1 = T1
 U_x2 = p2["no_response"] * T5 + p2["low_retaliate"] * max(T6a, T6b) + p2["high_retaliate"] * max(T7a, T7b)
 U_x3 = p3["no_response"] * T2 + p3["low_retaliate"] * T3 + p3["high_retaliate"] * T4
 
-C_x1 = C1
-C_x2 = p2["no_response"] * C5 + p2["low_retaliate"] * max(C6a, C6b) + p2["high_retaliate"] * max(C7a, C7b)
-C_x3 = p3["no_response"] * C2 + p3["low_retaliate"] * C3 + p3["high_retaliate"] * C4
+# C_x1 = C1
+# C_x2 = p2["no_response"] * C5 + p2["low_retaliate"] * max(C6a, C6b) + p2["high_retaliate"] * max(C7a, C7b)
+# C_x3 = p3["no_response"] * C2 + p3["low_retaliate"] * C3 + p3["high_retaliate"] * C4
 
 # Best responses
 us_options = {"x1": U_x1, "x2": U_x2, "x3": U_x3}
@@ -176,10 +176,10 @@ st.write(f"**x1 (No Tariff):** {round(U_x1, 2)}")
 st.write(f"**x2 (Low Tariff):** {round(U_x2, 2)}")
 st.write(f"**x3 (High Tariff):** {round(U_x3, 2)}")
 
-st.subheader(f"{player2} Expected Payoffs")
-st.write(f"**x1:** {round(C_x1, 2)}")
-st.write(f"**x2:** {round(C_x2, 2)}")
-st.write(f"**x3:** {round(C_x3, 2)}")
+# st.subheader(f"{player2} Expected Payoffs")
+# st.write(f"**x1:** {round(C_x1, 2)}")
+# st.write(f"**x2:** {round(C_x2, 2)}")
+# st.write(f"**x3:** {round(C_x3, 2)}")
 
 st.subheader("Best Responses")
 st.markdown(f"- **Best initial move for US:** `{us_best}`")
@@ -219,10 +219,10 @@ dot.edge("P2_x3", "T2", label=f"y1 = {p3['no_response']:.2f}")
 dot.edge("P2_x3", "T3", label=f"y2 = {p3['low_retaliate']:.2f}")
 dot.edge("P2_x3", "T4", label=f"y3 = {p3['high_retaliate']:.2f}")
 
-dot.edge("US2_y2", "T6a", label="z1 (0.6)")
-dot.edge("US2_y2", "T6b", label="z2 (0.9)")
-dot.edge("US2_y3", "T7a", label="z1 (0.6)")
-dot.edge("US2_y3", "T7b", label="z2 (0.9)")
+dot.edge("US2_y2", "T6a", label="z1")
+dot.edge("US2_y2", "T6b", label="z2")
+dot.edge("US2_y3", "T7a", label="z1")
+dot.edge("US2_y3", "T7b", label="z2")
 
 st.subheader("Game Tree")
 st.graphviz_chart(dot)
