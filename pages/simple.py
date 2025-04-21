@@ -59,6 +59,16 @@ st.title("🇺🇸 Simplified Tariff Game")
 country = st.selectbox("Select Country:", countries.keys())
 prof    = countries[country]
 
+true_types = {
+    "China": "high",
+    "Mexico": "none",
+    "EU": "low"
+}
+
+st.markdown(f"**True retaliation type of each country:**")
+for name, typ in true_types.items():
+    st.markdown(f"- **{name}** → `{typ}`")
+
 # 2. fixed policy parameters ----------------------------------------
 t_low  = 0.10   # US low‑tariff rate
 t_high = 0.40   # US high‑tariff rate
