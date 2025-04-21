@@ -52,9 +52,30 @@ def us_payoff_simple(t_us, retaliation, GDP_partner, friendliness, partner_type)
 def foreign_payoff_simple(t_us, retaliation, GDP, friendliness, partner_type):
     type_sensitivity = {"high": 1.0, "low": 0.6, "none": 0.3}
     sens = type_sensitivity[partner_type]
+
+    # 1. Damage from US tariff
     tariff_damage = t_us * GDP * sens
+
+    # 2. Gain from retaliation (only if not friendly)
     retaliation_gain = retaliation * (1 - friendliness) * sens
-    return round(-tariff_damage + retaliation_gain, 2)
+
+    # 3. Cost of retaliation
+    # - friendlier → more cost
+    # - smaller GDP → more cost
+    # - higher US tariff → offsets some cost (cause they are being too aggressive)
+    gdp_factor = 1 / (GDP + 0.1)
+    base_cost = retaliation * friendliness * gdp_factor * 5
+    tariff_discount = t_us * 3  # High tariffs reduce the cost (or pressure to retaliate)
+
+    retaliation_cost = max(base_cost - tariff_discount, 0)  # never go negative
+
+    # 4. Net retaliation payoff
+    net_retaliation = retaliation_gain - retaliation_cost
+
+    # 5. Final total payoff
+    return round(-tariff_damage + net_retaliation, 2)
+
+
 
 # === Streamlit UI ===
 st.title("🇺🇸 Simplified Tariff Game (GDP + Friendliness + Type-Aware)")
