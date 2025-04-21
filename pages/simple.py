@@ -59,12 +59,11 @@ st.title("🇺🇸 Simplified Tariff Game")
 country = st.selectbox("Select Country:", countries.keys())
 prof    = countries[country]
 
-# 2. policy sliders --------------------------------------------------
-st.sidebar.header("Policy Settings")
-t_low  = st.sidebar.slider("US low‑tariff rate",    0.00, 0.30, 0.10, 0.01)
-t_high = st.sidebar.slider("US high‑tariff rate",   0.00, 0.60, 0.40, 0.01)
-t_ret  = st.sidebar.slider(f"{country} retaliation rate", 0.00, 0.40, 0.20, 0.01)
-gamma  = st.sidebar.slider("Friendliness penalty γ", 0.0, 5.0, 2.5, 0.1)
+# 2. fixed policy parameters ----------------------------------------
+t_low  = 0.10   # US low‑tariff rate
+t_high = 0.40   # US high‑tariff rate
+t_ret  = 0.20   # Foreign retaliation rate
+gamma  = 2.5    # Friendliness penalty γ
 
 # 3. normalised state vars ------------------------------------------
 G = (prof["GDP"]          - GDP_MIN) / (GDP_MAX - GDP_MIN)
