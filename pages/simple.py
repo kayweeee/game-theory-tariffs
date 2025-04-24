@@ -24,20 +24,20 @@ def softmax(scores: np.ndarray) -> np.ndarray:
 def response_type_probs(G, N, D, F):
     """Nature’s soft‑max score for each retaliation type"""
     S_ret  = 1.4*G + 1.5*N - 1.0*D - 1.2*F
-    S_low  = 1.2*F + 0.8*D + 0.9*(1-N) + 0.6*G
+    S_neg  = 1.2*F + 0.8*D + 0.9*(1-N) + 0.6*G
     S_none = 1.1*(1-G) + 1.0*D + 1.0*F
-    return softmax(np.array([S_ret, S_low, S_none]))
+    return softmax(np.array([S_ret, S_neg, S_none]))
 
 def us_payoff_simple(t_us, retaliation, GDP_partner, friendliness,
                      partner_type, gamma: float = 2.5):
-    penalty = {"high": .5, "low": .2, "none": .1}[partner_type]
+    penalty = {"retaliatory": .5, "negotiator": .2, "none": .1}[partner_type]
     tariff_gain          = t_us * (1 - friendliness)
     retaliation_cost     = retaliation * GDP_partner * penalty
     friendliness_penalty = t_us * friendliness * gamma
     return round(tariff_gain - retaliation_cost - friendliness_penalty, 2)
 
 def foreign_payoff_simple(t_us, retaliation, GDP, friendliness, partner_type):
-    type_sensitivity = {"high": 1.0, "low": .6, "none": .3}
+    type_sensitivity = {"retaliatory": 1.0, "negotiator": .6, "none": .3}
     sens = type_sensitivity[partner_type]
 
     tariff_damage    =  t_us * GDP * sens
@@ -60,9 +60,9 @@ country = st.selectbox("Select Country:", countries.keys())
 prof    = countries[country]
 
 true_types = {
-    "China": "high",
+    "China": "retaliatory",
     "Mexico": "none",
-    "EU": "low"
+    "EU": "negotiator"
 }
 
 st.markdown(f"**True retaliation type of each country:**")
@@ -81,7 +81,7 @@ D =  prof["Trade"]        / TRADE_MAX
 N =  prof["Nationalism"]  / NATIONALISM_MAX
 F =  prof["Friendliness"]
 
-types = ["high", "low", "none"]
+types = ["retaliatory", "negotiator", "none"]
 p     = dict(zip(types, response_type_probs(G, N, D, F)))
 
 # ------------------------------------------------------------------
